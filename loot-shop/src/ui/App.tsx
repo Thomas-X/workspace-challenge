@@ -1,26 +1,30 @@
 import React, { FC } from 'react';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
-import { Router, Switch, Route } from 'react-router-dom';
+import { Router, Switch, Route, BrowserRouter } from 'react-router-dom';
 import { createHashHistory } from 'history';
+import { ReactQueryDevtools } from 'react-query-devtools';
 import { ROUTES } from '../routes';
+import { isDev } from '../util/isDev';
+import { Nav } from './components/Nav';
 
 const queryCache = new QueryCache();
-const history = createHashHistory();
 
 interface Props {}
 
 const App: FC<Props> = () => {
   return (
     <ReactQueryCacheProvider queryCache={queryCache}>
-      <Router history={history}>
+      <BrowserRouter>
+        <Nav />
         <Switch>
           {Object.entries(ROUTES).map(([key, route]) => (
-            <Route path={route.path} key={key}>
+            <Route path={route.path} key={key} exact>
               <route.component />
             </Route>
           ))}
         </Switch>
-      </Router>
+      </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={isDev()} />
     </ReactQueryCacheProvider>
   );
 };

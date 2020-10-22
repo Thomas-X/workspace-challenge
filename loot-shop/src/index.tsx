@@ -1,8 +1,11 @@
+import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { initializeIcons } from '@uifabric/icons';
 import App from './ui/App';
 import * as serviceWorker from './serviceWorker';
 
+initializeIcons();
 ReactDOM.render(
   <React.StrictMode>
     <App />
