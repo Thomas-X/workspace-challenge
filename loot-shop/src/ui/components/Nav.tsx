@@ -5,14 +5,15 @@ import { PrimaryButton } from '@fluentui/react/lib/Button';
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import { ROUTES } from '../../routes';
+import { useBuyStore } from '../../core/stores/useBuyStore';
 
 interface Props {}
 
 export const Nav: FC<Props> = () => {
-  const history = useHistory();
+  const toggleModal = useBuyStore((state) => state.toggle);
   const onBuyClick = useCallback(() => {
-    console.log('heyooo');
-  }, []);
+    toggleModal();
+  }, [toggleModal]);
   return (
     <NavContainer>
       <Link to='/' style={{ textDecoration: 'none' }}>

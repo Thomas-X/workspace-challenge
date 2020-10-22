@@ -7,6 +7,7 @@ import { QueryKeys } from '../../../core/data/QueryKeys';
 import { getItems } from '../../../core/data/fetchers/getItems';
 import { getMe } from '../../../core/data/fetchers/getMe';
 import { HomePage } from '../HomePage';
+import { BuyModal } from '../modals/BuyModal';
 
 interface Props {}
 
@@ -24,6 +25,7 @@ export const Home: FC<Props> = () => {
 
   return (
     <>
+      <BuyModal />
       <HomePage>
         <div>
           <Separator styles={{ root: { margin: '1rem 0' } }}>

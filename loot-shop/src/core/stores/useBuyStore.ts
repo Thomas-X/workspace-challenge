@@ -1,6 +1,11 @@
 import create from 'zustand';
 
-export const useBuyStore = create((set) => ({
+type Store = {
+  isOpen: boolean;
+  toggle: () => void;
+};
+
+export const useBuyStore = create<Store>((set) => ({
   isOpen: false,
   toggle: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
