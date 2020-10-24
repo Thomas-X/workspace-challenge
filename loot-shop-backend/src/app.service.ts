@@ -31,21 +31,24 @@ export class AppService {
       'Ultra-rare',
       'Uber-rare',
     ];
+    // labeled tuples are not here yet :(
     const names = [
-      'Bronze sword: low quality, low price',
-      'Wooden shield',
-      'Battle axe',
-      'Longsword, carefully crafted to slay your enemies',
+      ['Bronze sword: low quality, low price', 'bronze_sword.png'],
+      ['Wooden shield', 'wooden_shield.png'],
+      ['Battle axe', 'battle_axe.png'],
+      ['Longsword, carefully crafted to slay your enemies', 'longsword.png'],
     ];
-    return Array(random(10, 50))
+    return Array(random(4, 10))
       .fill(null)
-      .map(() => ({
-        id: nanoid(),
-        name: `${AppService.pickRandom(modifiers)} - ${AppService.pickRandom(
-          names,
-        )}`,
-        price: random(10, 100),
-        quantity: random(1, 42),
-      }));
+      .map(() => {
+        const item = AppService.pickRandom(names);
+        return {
+          id: nanoid(),
+          name: `${AppService.pickRandom(modifiers)} - ${item[0]}`,
+          price: random(10, 100),
+          quantity: random(1, 42),
+          image: item[1],
+        };
+      });
   }
 }

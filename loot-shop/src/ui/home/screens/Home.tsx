@@ -7,7 +7,7 @@ import { QueryKeys } from '../../../core/data/QueryKeys';
 import { getItems } from '../../../core/data/fetchers/getItems';
 import { getMe } from '../../../core/data/fetchers/getMe';
 import { HomePage } from '../HomePage';
-import { BuyModal } from '../modals/BuyModal';
+import { BuyModal } from '../modals/BuyModal/BuyModal';
 
 interface Props {}
 
