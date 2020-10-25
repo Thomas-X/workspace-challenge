@@ -7,7 +7,14 @@ import { ROUTES } from '../routes';
 import { isDev } from '../util/isDev';
 import { Nav } from './components/Nav';
 
-const queryCache = new QueryCache();
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      // since we're using random data it would be very weird to get completely new user + items every time window gets focused
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 interface Props {}
 

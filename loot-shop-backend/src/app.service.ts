@@ -38,7 +38,7 @@ export class AppService {
       ['Battle axe', 'battle_axe.png'],
       ['Longsword, carefully crafted to slay your enemies', 'longsword.png'],
     ];
-    return Array(random(4, 10))
+    return Array(random(4, 8))
       .fill(null)
       .map(() => {
         const item = AppService.pickRandom(names);

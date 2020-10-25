@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Text } from '@fluentui/react/lib/Text';
 import { Separator } from '@fluentui/react/lib/Separator';
@@ -8,6 +8,7 @@ import { getItems } from '../../../core/data/fetchers/getItems';
 import { getMe } from '../../../core/data/fetchers/getMe';
 import { HomePage } from '../HomePage';
 import { BuyModal } from '../modals/BuyModal/BuyModal';
+import { useItemsStore } from '../../../core/stores/useItemsStore';
 
 interface Props {}
 
@@ -17,11 +18,16 @@ export const Home: FC<Props> = () => {
     isFetching: itemsFetching,
     error: itemsError,
   } = useQuery(QueryKeys.items, getItems);
-
   const { data: me, isFetching: meFetching, error: meError } = useQuery(
     QueryKeys.me,
     getMe
   );
+  const setMoney = useItemsStore((state) => state.setMoney);
+  useEffect(() => {
+    if (me?.balance) {
+      setMoney(me.balance);
+    }
+  }, [me?.balance, setMoney]);
 
   return (
     <>
