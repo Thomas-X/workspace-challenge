@@ -27,4 +27,8 @@ export const ImageSelector: FC<Props> = ({ imageName }) => {
 const Image = styled.img`
   width: 60px;
   height: 60px;
+
+  @media (max-width: 480px) {
+    display: none;
+  }
 `;

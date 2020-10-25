@@ -9,12 +9,13 @@ import { getMe } from '../../../core/data/fetchers/getMe';
 import { HomePage } from '../HomePage';
 import { BuyModal } from '../modals/BuyModal/BuyModal';
 import { useItemsStore } from '../../../core/stores/useItemsStore';
+import { NoItems } from '../../components/NoItems';
 
 interface Props {}
 
 export const Home: FC<Props> = () => {
   const {
-    data: items,
+    data: items = [],
     isFetching: itemsFetching,
     error: itemsError,
   } = useQuery(QueryKeys.items, getItems);
@@ -28,7 +29,6 @@ export const Home: FC<Props> = () => {
       setMoney(me.balance);
     }
   }, [me?.balance, setMoney]);
-
   return (
     <>
       <BuyModal />
@@ -48,6 +48,7 @@ export const Home: FC<Props> = () => {
           <Separator styles={{ root: { margin: '1rem 0' } }}>
             <Text variant='xLarge'>Current stocks</Text>
           </Separator>
+          {(!items || (items.length === 0 && !itemsFetching)) && <NoItems />}
           {items?.map((item) => (
             <div key={item.id}>
               <Text style={{ flex: 1 }} variant='small'>

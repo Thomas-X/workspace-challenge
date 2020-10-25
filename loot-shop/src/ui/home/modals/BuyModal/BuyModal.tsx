@@ -6,12 +6,14 @@ import styled, { css } from 'styled-components';
 import { FontIcon } from '@fluentui/react/lib/Icon';
 import { useQuery } from 'react-query';
 import shallow from 'zustand/shallow';
+import { MessageBar, MessageBarType } from '@fluentui/react/lib/MessageBar';
 import { useBuyStore } from '../../../../core/stores/useBuyStore';
 import { QueryKeys } from '../../../../core/data/QueryKeys';
 import { getItems } from '../../../../core/data/fetchers/getItems';
 import { ImageSelector } from './ImageSelector';
 import { ItemRow } from './ItemRow';
 import { useItemsStore } from '../../../../core/stores/useItemsStore';
+import { NoItems } from '../../../components/NoItems';
 
 interface Props {}
 
@@ -21,7 +23,10 @@ export const BuyModal: FC<Props> = () => {
     state.isOpen,
     state.toggle,
   ]);
-  const { data: items = [] } = useQuery(QueryKeys.items, getItems);
+  const { data: items = [], isFetching: itemsFetching } = useQuery(
+    QueryKeys.items,
+    getItems
+  );
   const countItems = useItemsStore((state) => state.items);
   const sum = useMemo(() => {
     let v = 0;
@@ -34,10 +39,17 @@ export const BuyModal: FC<Props> = () => {
     return v;
   }, [countItems, items]);
   const itemsBought = useMemo(() => {
-    return Object.values(items).filter(
-      (x) => Object.keys(countItems).filter((y) => y === x.id)[0]
-    );
+    return {
+      basket: countItems,
+      items: Object.values(items).filter(
+        (x) => Object.keys(countItems).filter((y) => y === x.id)[0]
+      ),
+    };
   }, [countItems, items]);
+  const noItems = useMemo(
+    () => (!items || items.length === 0) && !itemsFetching,
+    [items, itemsFetching]
+  );
   return (
     <Modal
       isOpen={isOpen}
@@ -48,9 +60,14 @@ export const BuyModal: FC<Props> = () => {
         main: {
           flex: '.8 .8 auto',
           padding: '40px',
+          '@media (max-width: 480px)': {
+            padding: '20px',
+          },
         },
         scrollableContent: {
+          // strange overrides needed from fluentui.... not a great first-experience so far
           overflowY: 'initial !important',
+          maxHeight: 'initial !important',
         },
       }}
     >
@@ -59,20 +76,52 @@ export const BuyModal: FC<Props> = () => {
           <Text variant='xxLarge'>Order</Text>
           <ClearIcon iconName='Clear' onClick={toggleModal} />
         </Header>
+        {noItems && <NoItems />}
         {items.map((item, idx) => (
           <ItemRow item={item} last={idx === items.length - 1} />
         ))}
-        <Total>
+        <Total
+          style={{
+            margin: '10px 0 20px 0',
+          }}
+        >
           <Text variant='xLarge'>Total</Text>
           <Text variant='xLarge'>{sum} gold</Text>
         </Total>
+        <Total
+          style={{
+            margin: '40px 0 60px 0',
+          }}
+        >
+          <Text variant='xLarge'>Your balance</Text>
+          <Text variant='xLarge'>{money} gold</Text>
+        </Total>
+
+        {sum > money && (
+          <MessageBar
+            messageBarType={MessageBarType.warning}
+            styles={{
+              root: {
+                marginBottom: '10px',
+              },
+            }}
+          >
+            You don't have enough balance to complete this order, remove some
+            items to continue.
+          </MessageBar>
+        )}
+
         <ButtonContainer>
           <PrimaryButton
+            disabled={sum > money || noItems || sum <= 0}
+            style={{ marginRight: '10px' }}
             onClick={() =>
               // eslint-disable-next-line no-alert
               alert(`You bought ${JSON.stringify(itemsBought, null, 4)}`)
             }
-          />
+          >
+            Buy
+          </PrimaryButton>
           <DefaultButton onClick={toggleModal}>Cancel</DefaultButton>
         </ButtonContainer>
       </Container>
