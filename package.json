@@ -1,0 +1,14 @@
+{
+  "name": "workspace-challenge",
+  "version": "1.0.0",
+  "repository": "git@github.com:Thomas-X/workspace-challenge.git",
+  "author": "Thomas Zwarts <thomaszwarts@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "run:install": "cd loot-shop && npm i && cd ../loot-shop-backend && npm i && cd ../",
+    "start": "concurrently \"cd loot-shop-backend && npm start\" \"cd loot-shop && npm start\""
+  },
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  }
+}
