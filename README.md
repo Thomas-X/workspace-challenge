@@ -1,5 +1,7 @@
 ## Workspace 365
 I had a list of new libraries I wanted to use for a while now, which were fun to experiment with in this challenge! I took the liberty to write some of my findings / conclusions down, so it explains some things from the codebase.
+
+⚠️ I forgot the 'check if ordered amount doesn't exceed quantity' condition, I estimate it at ~1h
 ## Usage
 Tested on node v14.9.0, npm 6.14.7 and yarn 1.22.5
 
